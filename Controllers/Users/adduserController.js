@@ -51,7 +51,87 @@ connection.query("SELECT * FROM users WHERE email = ? ", [req.body.email], funct
 
 
         let code  =  Math.floor(100000 + Math.random() * 900000)
-        var sql = `INSERT INTO emailverification ( UserId, email, vcode) VALUES ("${userId}", "${req.body.email}","${code}")`;  
+        
+        
+        connection.query(`SELECT * FROM emailverification WHERE email = "${req.body.email}"` ,(errrr, result)=>{
+
+console.log("first err chance")
+console.log(result)
+          if(result.length){
+
+            console.log("2 err chance")
+
+
+
+            var sql = `UPDATE  emailverification SET  UserId="${userId}", vcode="${code}" WHERE  email="${req.body.email}" `;
+
+            connection.query(sql, function (errr, result) {
+                  if (errr) {throw errr}else{
+          
+                    console.log("1 record inserted, ID: " + result.insertId);
+                    
+                    let transporter = nodemailer.createTransport({
+                      service: 'gmail',
+                      auth: {
+                        user: 'danish.k7a@gmail.com',
+                        pass: 'gzsmjbpllltuiqag'
+                      }
+                    });
+              
+                    
+                    
+                    var mailOptions = {
+                      from: 'danish.k7a@gmail.com',
+                      to: req.body.email,
+                      subject: 'Verification Code',
+                      // text: `here is your ${code}`
+                      html:`<div><h1>Code : ${code}</h1></div>`
+                
+                
+                    };
+                   
+                
+                  
+                
+                
+                    
+                try{
+                  transporter.sendMail(mailOptions, function(error, info){
+                    if (error) {
+                      console.log("Hi" + error);
+                      res.status(400).send("email failed")
+                    } else {
+                      // res.send('email sent')
+                      console.log('Email sent: ' + info.response);
+                      
+                        // res.status(200).send("new user added") 
+                        res.json({status:200 , msg:'success'})
+                    }
+                  }); 
+                }catch(e){
+              
+                  print(e)
+              
+                }
+                
+          
+          
+          
+                  }
+                  
+                });
+                
+
+
+
+
+
+
+
+
+          }else{
+
+            var sql = `INSERT INTO emailverification ( UserId, email, vcode) VALUES ("${userId}", "${req.body.email}","${code}")`;  
   connection.query(sql, function (errr, result) {
         if (errr) {throw errr}else{
 
@@ -108,6 +188,16 @@ connection.query("SELECT * FROM users WHERE email = ? ", [req.body.email], funct
         
       });
       
+
+
+          }
+
+
+
+        })
+        
+        
+        
 
 
 

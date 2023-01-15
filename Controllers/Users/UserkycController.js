@@ -1,4 +1,4 @@
-const UploadUserDoc =(req, res)=>{
+const UserkycController =(req, res)=>{
   
 
     let name = req.body.name;
@@ -8,10 +8,12 @@ const UploadUserDoc =(req, res)=>{
 
 
 console.log(name + ""+adhar+""+phone)
+console.log(req.body)
+console.log(req.file)
 
 res.json({msg:"working"})
     
         
 }
 
-module.exports = UploadUserDoc ;
+module.exports = UserkycController ;

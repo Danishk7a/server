@@ -1,28 +1,27 @@
 const connection = require('../../Connection')
 const multer = require('multer')
-const path =require('path')
-const storage = multer.diskStorage({
-    destination:(req,file,cb)=>{
-
-        cb(null,'./Public/images/CustomCoin/')
-    },
-    filename:(req,file,cb)=>{
-    
-        cb(null, "symbol" + path.extname(file.originalname))
-    }
-
-})
-const upload = multer({storage:storage})
-
-
 
 
 const AddCustomCoin =(req, res)=>{
-    upload.single('symbol')
+    let symbol  = req.body.symbol;
+    let quantity = req.body.quantity;
+    let price = req.body.price;
+    
+  let sql = `INSERT INTO customcoin (symbol,quantity, price,img) VALUES ("${symbol}", "${quantity}","${price}", "http://localhost:5000/static/images/coinimage/${symbol}.png")`
+
+ connection.query(sql, (err,result)=>{
+
+if(err) throw err;
+
+        res.send('hogyi insert')
 
 
+  })
+    
 
-
-}
-
+    
+        
+            
+    }
+    
 module.exports = AddCustomCoin ;

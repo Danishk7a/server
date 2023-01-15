@@ -9,14 +9,24 @@ const SellCoinController = async (req, res)=>{
     let backedCoinPrice = 81.61;
     let inputAmount = req.body.amount;
     let inputSymbol = req.body.symbol;
+    let custom = req.body.custom;
+    let CoinPrice;
 
-
+    if (!custom) {
     const Cp = await axios.get(`https://api.binance.com/api/v3/ticker/price?symbol=${inputSymbol}`);
     console.log(Cp.data.price)
-    let CoinPrice = Cp.data.price;
+    CoinPrice = Cp.data.price;
+    }
 
     let backedCoin = inputSymbol.substr(inputSymbol.length - 4);
     let Coin = inputSymbol.substring(0, inputSymbol.length - 4);
+
+
+
+
+
+
+
 
     connection.query(`START TRANSACTION`,(err,res)=>{
         if(err) throw err;

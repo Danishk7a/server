@@ -13,22 +13,20 @@ const Payment =  async (req,res, next)=>{
   receive_currency = 'ETH'
   // callback_url = 'http://localhost:5000/cnpay'
   callback_url = 'https://bcex.requestcatcher.com/'
+  // callback_url = 'http://localhost:5000/callback'
 
  const order =  await testCongate.createOrder({
   order_id, price_amount, price_currency, receive_currency,callback_url
     });
 
 
-// //     const sdk = require('api')('@coingate/v2#fRps8aPyF6cF6SWLAKzpYsG1bbcZX42dZT5PnHDH');
-
-// // sdk.checkout({id: order.order_id, accept: 'application/json'})
-// //   .then(({ data }) => console.log(data))
-// //   .catch(err => console.error(err));
-
 res.json(order)
+console.log(order);
+
+
 return next();
 
-console.log(order);
+
   
     
 
